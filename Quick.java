@@ -2,7 +2,26 @@ import java.util.*;
 public class Quick{
     /*return the value that is the kth smallest value of the array.
  */
+ public static void main(String[] args) {
+     int[] test = new int[] {1,0,5,7,3};
+     System.out.println(partition(test,0,4));
+     test = new int[] {1,0,5,7,9,8,3,6};
+     quicksort(test,0,test.length-1);
+     for(int i : test){
+         System.out.print(i);
+     }
+     System.out.println();
+     test = new int[] {1,0,5,7,9,8,3,6};
+     System.out.println(quickselect(test,4));
+ }
  public static int quickselect(int []data, int k){
+     int test = partition(data,0,data.length);
+     if(test > k){
+         quickselect(Arrays.copyOfRange(data,0,k),k);
+     }else if(test < k){
+         quickselect(Arrays.copyOfRange(data,k+1,0),k);
+     }
+     return data[test];
  }
 
  /*@return the index of the final position of the pivot element.
@@ -17,18 +36,30 @@ public class Quick{
      int pivot = start;
      start++;
      //start comparing and swapping;
-     for(int i = start; i < data.length; i++){
-         if(data[i] > data[pivot]){
-             hold = data[i];
-             data[i] = data[end];
+     while(start < end){
+         if(data[start] > data[pivot]){
+             hold = data[start];
+             data[start] = data[end];
              data[end] = hold;
-             i--;
-         } else if(data[i] < data[pivot]){
-             hold = data[i];
-             data[i] = data[pivot];
+             end--;
+         } else if(data[start] < data[pivot]){
+             hold = data[start];
+             data[start] = data[pivot];
              data[pivot] = hold;
-             pivot = i;
+             pivot = start;
+             start++;
          }
      }
+     return pivot;
+ }
+ /*Modify the array to be in increasing order.
+ */
+ public static void quicksort(int[] data, int lo, int hi){
+     if (lo >= hi){
+         return;
+     }
+     int pivot = partition(data,lo,hi);
+     quicksort(data, lo, pivot-1);
+     quicksort(data, pivot+1, hi);
  }
 }
