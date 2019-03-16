@@ -4,7 +4,7 @@ public class Quick{
  */
  public static void main(String[] args) {
      int[] test = new int[] {1,0,5,7,3};
-     System.out.println(partition(test,0,4));
+     System.out.println(partition(test,2,4));
      for(int i : test){
          System.out.print(i);
      }
@@ -32,7 +32,7 @@ public class Quick{
  */
  public static int partition (int [] data, int start, int end){
      Random rand = new Random();
-     int index = rand.nextInt(end-start+1);
+     int index = rand.nextInt(end-start+1)+start;
      //pivot swap
      int hold = data[start];
      data[start] = data[index];
