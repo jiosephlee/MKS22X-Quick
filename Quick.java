@@ -19,18 +19,24 @@ public class Quick{
      System.out.println(quickselect(test,4));
  }
  public static int quickselect(int []data, int k){
-     int test = partition(data,0,data.length-1);
-     if(test > k){
-         quickselect(Arrays.copyOfRange(data,0,test),k);
-     }else if(test < k){
-         quickselect(Arrays.copyOfRange(data,test+1,data.length),k-(test+1));
+     int min = 0;
+     int max = data.length - 1;
+     int pivot = partition(data,0,data.length-1);
+     while(pivot != k){
+         pivot = partition(data,min,max); //reset with new partition
+         if(pivot < k){
+             min = pivot; //narrow the array we're looking at using the bounds of partition
+         }
+         if(pivot > k){
+             max = pivot;
+         }
      }
-     return data[test];
+     return data[pivot];
  }
 
  /*@return the index of the final position of the pivot element.
  */
- public static int partition (int [] data, int start, int end){
+ public static int partition (int [] data, int start, int end){ // this partition can't deal with duplicates
      Random rand = new Random();
      int index = rand.nextInt(end-start+1)+start;
      //pivot swap
@@ -41,29 +47,73 @@ public class Quick{
      start++;
       //start comparing and swapping;
      while(start <= end){
-         if(data[start] > data[pivot]){
+         if(data[start] > data[pivot]){ //if current value is greater than pivot, put it at the "end" and swap it with current
              hold = data[start];
              data[start] = data[end];
              data[end] = hold;
              end--;
-         } else if(data[start] < data[pivot]){
+         } else if(data[start] < data[pivot]){ // if current value is smaller than pivot, -
              hold = data[start];
              data[start] = data[pivot];
              data[pivot] = hold;
              pivot = start;
              start++;
+         } else{ //if they're equal, randomly put on either side
+             int random = rand.nextInt(2);
+             if (random == 0){
+                 hold = data[start];
+                 data[start] = data[end];
+                 data[end] = hold;
+                 end--;
+             } else{
+                 hold = data[start];
+                 data[start] = data[pivot];
+                 data[pivot] = hold;
+                 pivot = start;
+                 start++;
+             }
          }
      }
      return pivot;
  }
+ private static int[] partitionDutch(int[] data, int current, int end){
+     Random rand = new Random();
+     int index = rand.nextInt(end-current+1)+current;
+     //pivot swap
+     int hold = data[current];
+     data[current] = data[index];
+     data[index] = hold;
+     int pivotlo = current;
+     int pivothi = current;
+     current++;
+      //start comparing and swapping;
+     while(current <= end){
+         if(data[current] > data[pivotlo]){ // when the current value is greater than the pivot, swap with the end
+             hold = data[current];
+             data[current] = data[end];
+             data[end] = hold;
+             end--;
+         } else if(data[current] < data[pivotlo]){ //when the current value is less than the the pivot, swap with the low pivot
+             hold = data[current];
+             data[current] = data[pivotlo];
+             data[pivotlo] = hold;
+             pivothi = current;
+             pivotlo++;
+             current++;
+         } else{
+             pivothi++;
+         }
+     }
+     return new int[]{pivotlo,pivothi};
+}
  /*Modify the array to be in increasing order.
  */
  public static void quicksort(int[] data, int lo, int hi){
      if (lo >= hi){
          return;
      }
-     int pivot = partition(data,lo,hi);
-     quicksort(data, lo, pivot-1);
-     quicksort(data, pivot+1, hi);
+     int pivot[] = partitionDutch(data,lo,hi);
+     quicksort(data, lo, pivot[0]-1);
+     quicksort(data, pivot[1]+1, hi);
  }
 }
