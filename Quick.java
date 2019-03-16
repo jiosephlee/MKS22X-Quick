@@ -9,7 +9,7 @@ public class Quick{
          System.out.print(i);
      }
      System.out.println();
-     test = new int[] {1,0,5,7,9,8,3,6};
+     test = new int[] {1,0,5,7,7,8,6,7,8,8,8,9,8,3,6};
      quicksort(test,0,test.length-1);
      for(int i : test){
          System.out.print(i);
@@ -88,6 +88,9 @@ public class Quick{
      current++;
       //start comparing and swapping;
      while(current <= end){
+         //for(int i : data){
+        //     System.out.print(i); }
+         //System.out.println();
          if(data[current] > data[pivotlo]){ // when the current value is greater than the pivot, swap with the end
              hold = data[current];
              data[current] = data[end];
@@ -101,6 +104,7 @@ public class Quick{
              pivotlo++;
              current++;
          } else{
+             current++;
              pivothi++;
          }
      }
