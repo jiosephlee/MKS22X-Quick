@@ -5,6 +5,10 @@ public class Quick{
  public static void main(String[] args) {
      int[] test = new int[] {1,0,5,7,3};
      System.out.println(partition(test,0,4));
+     for(int i : test){
+         System.out.print(i);
+     }
+     System.out.println();
      test = new int[] {1,0,5,7,9,8,3,6};
      quicksort(test,0,test.length-1);
      for(int i : test){
@@ -15,11 +19,11 @@ public class Quick{
      System.out.println(quickselect(test,4));
  }
  public static int quickselect(int []data, int k){
-     int test = partition(data,0,data.length);
+     int test = partition(data,0,data.length-1);
      if(test > k){
-         quickselect(Arrays.copyOfRange(data,0,k),k);
+         quickselect(Arrays.copyOfRange(data,0,test),k);
      }else if(test < k){
-         quickselect(Arrays.copyOfRange(data,k+1,0),k);
+         quickselect(Arrays.copyOfRange(data,test+1,data.length),k-(test+1));
      }
      return data[test];
  }
@@ -28,15 +32,15 @@ public class Quick{
  */
  public static int partition (int [] data, int start, int end){
      Random rand = new Random();
-     int index = rand.nextInt(data.length);
+     int index = rand.nextInt(end-start+1);
      //pivot swap
      int hold = data[start];
      data[start] = data[index];
      data[index] = hold;
      int pivot = start;
      start++;
-     //start comparing and swapping;
-     while(start < end){
+      //start comparing and swapping;
+     while(start <= end){
          if(data[start] > data[pivot]){
              hold = data[start];
              data[start] = data[end];
