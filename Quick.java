@@ -153,7 +153,24 @@ public class Quick{
          return;
      }
      int pivot[] = partitionDutch(data,lo,hi);
-     quicksort(data, lo, pivot[0]-1);
-     quicksort(data, pivot[1]+1, hi);
- }
+     if(hi - lo < 43){
+         insertionSort(data, lo, pivot[0]);
+         //System.out.print("crossed");
+         insertionSort(data, pivot[1]+1, hi+1);
+     } else{
+         quicksort(data, lo, pivot[0]-1);
+         //System.out.print("crossed");
+         quicksort(data, pivot[1]+1, hi);
+     }
+    }
+    public static void insertionSort(int[] data, int lo, int hi){
+        int orig;
+        for (int x = 1+lo; x < hi; x++){
+          orig = data[x];
+          for (int y = x; y > lo && data[y] < data[y-1] ; y--){
+              data[y] = data[y-1];
+              data[y-1] = orig;
+          }
+        }
+    }
 }
